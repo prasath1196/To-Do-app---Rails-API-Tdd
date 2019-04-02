@@ -16,7 +16,8 @@ RSpec.describe 'Todos API', type: :request do
   end
 
   describe 'GET /todos/:id' do
-    before {get '/todos/:#{todo_id}',params: valid_attributes }
+    let(:valid_attributes) { { title: 'Learn Elm', created_by: '1' } }
+    before {get "/todos/#{todo_id}",params: valid_attributes }
 
     context 'when the record exists' do
       it 'returns the todo' do
@@ -30,12 +31,13 @@ RSpec.describe 'Todos API', type: :request do
     end
 
     context 'when the record does not exist' do
+      let(:todo_id) { 100 }
       it 'returns a status code 404' do
         expect(response).to have_http_status(404)
       end
 
       it 'returns a not found message' do
-        expect(response.body).to match('/Could not find the todo')
+        expect(response.body).to match(/Couldn't find Todo/)
       end
     end
   end
