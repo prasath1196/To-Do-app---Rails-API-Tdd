@@ -39,4 +39,51 @@ RSpec.describe 'Todos API', type: :request do
       end
     end
   end
+  describe 'Post /todos' do
+    let(:valid_attributes) { { title: 'Learn Elm', created_by: '1' } }
+    context 'when data is valid' do
+      before { post '/todos', params: valid_attributes }
+
+      it 'Creates todo' do
+        expect(json['title']).to eq('Learn Elm')
+      end
+
+      it 'returns status code 201' do
+        expect(response).to have_http_status(201)
+      end
+    end
+
+    context 'when data is invalid' do
+      before { post '/todos', params: { title: 'Foobar' } }
+
+      it 'returns a validation failure message' do
+        expect(response.body).to match(/Validation failed: Created by can't be blank/)
+      end
+
+      it 'returns a status code 422' do
+        expect(response).to have_http_status(422)
+      end
+    end
+  end
+
+  describe 'PUT /todos/:id' do
+    let(:valid_attributes) { { title: 'Shopping' } }
+    context 'when the record exists' do
+      before { put "/todos/#{todo_id}", params: valid_attributes }
+      it 'updates the record ' do
+        expect(response.body).to be_empty
+      end
+      it 'returns the status 204' do
+        expect(response).to have_http_status(204)
+      end
+    end
+  end
+
+  describe 'DELETE /todos/:id' do
+    before { delete "/todos/#{todo_id}" }
+    it 'returns status 204' do
+      expect(response).to have_http_status(204)
+    end
+  end
+
 end
