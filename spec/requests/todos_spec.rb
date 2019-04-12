@@ -17,6 +17,7 @@ RSpec.describe 'Todos API', type: :request do
 
   describe 'GET /todos/:id' do
     let(:valid_attributes) { { title: 'Learn Elm', created_by: '1' } }
+    let(:valid_attributes) { { title: 'Learn Elm', created_by: '1' } }
     before {get "/todos/#{todo_id}",params: valid_attributes }
 
     context 'when the record exists' do
