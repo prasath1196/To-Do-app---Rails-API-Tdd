@@ -1,5 +1,5 @@
 require 'rails_helper'
-Rspec.describe AuthorizeApiRequest do
+RSpec.describe AuthorizeApiRequest do
   # Test user
   let(:user) {create(:user)}
   # Test header
@@ -41,12 +41,23 @@ Rspec.describe AuthorizeApiRequest do
         end
       end
 
+=begin
       context 'fake token' do
         let(:header) {{'Authorization' => 'foobar'}}
         subject(:invalid_request_obj) {described_class.new(header)}
         it 'handles JWT::DecodeError' do
           expect( invalid_request_obj.call).to raise_error(ExceptionHandler::InvalidToken,
               /Not enough or too many segments/)
+        end
+      end
+=end
+
+      context 'fake token' do
+        let(:header) { { 'Authorization' => 'foobar' } }
+        subject(:invalid_request_obj) { described_class.new(header) }
+
+        it 'handles JWT::DecodeError' do
+          expect { invalid_request_obj.call }.to raise_error(ExceptionHandler::InvalidToken, /Not enough or too many segments/)
         end
       end
     end
