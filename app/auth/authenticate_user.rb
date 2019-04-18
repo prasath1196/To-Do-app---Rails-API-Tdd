@@ -9,7 +9,7 @@ class AuthenticateUser
   end
 
   private
-  attr_reader :emai,:password
+  attr_reader :email,:password
 
   def user
     user = User.find_by(email:email)
